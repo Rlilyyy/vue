@@ -35,42 +35,50 @@ export type Config = {
 export default ({
   /**
    * Option merge strategies (used in core/util/options)
+   * 用于定义选项(options)的自定义合并策略
    */
   // $flow-disable-line
   optionMergeStrategies: Object.create(null),
 
   /**
    * Whether to suppress warnings.
+   * 禁止所有 Vue 的日志(log)与警告(warning)
    */
   silent: false,
 
   /**
    * Show production mode tip message on boot?
+   * 是否展示在 Vue 启动时的生产提示
    */
   productionTip: process.env.NODE_ENV !== 'production',
 
   /**
    * Whether to enable devtools
+   * 设置是否允许使用 vue-devtools
    */
   devtools: process.env.NODE_ENV !== 'production',
 
   /**
    * Whether to record perf
+   * 是否开启性能追踪
    */
   performance: false,
 
   /**
    * Error handler for watcher errors
+   * 设置一个处理函数，用于在组件 render 函数调用和 watcher 期间捕获错误
    */
   errorHandler: null,
 
   /**
    * Warn handler for watcher warns
+   * 为运行时(runtime)下的 Vue 警告设置一个自定义处理函数
    */
   warnHandler: null,
 
   /**
    * Ignore certain custom elements
+   * 帮助 Vue 忽略不受 Vue 管理的自定义元素
    */
   ignoredElements: [],
 

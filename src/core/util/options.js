@@ -245,6 +245,7 @@ const defaultStrat = function (parentVal: any, childVal: any): any {
 
 /**
  * Validate component names
+ * 检查 component 的名称是否正确
  */
 function checkComponents (options: Object) {
   for (const key in options.components) {
@@ -271,6 +272,7 @@ export function validateComponentName (name: string) {
 /**
  * Ensure all props option syntax are normalized into the
  * Object-based format.
+ * 格式化不同传参方式的 props
  */
 function normalizeProps (options: Object, vm: ?Component) {
   const props = options.props
@@ -278,6 +280,7 @@ function normalizeProps (options: Object, vm: ?Component) {
   const res = {}
   let i, val, name
   if (Array.isArray(props)) {
+    // 当 props 是 Array 的时候，只能使用 String 命名
     i = props.length
     while (i--) {
       val = props[i]
@@ -289,6 +292,7 @@ function normalizeProps (options: Object, vm: ?Component) {
       }
     }
   } else if (isPlainObject(props)) {
+    // 当 porps 是一个对象时，需要区分 value 是否为对象，如果是，则使用传入的 value，否则需要构造一个对象来将定义的 type 格式化
     for (const key in props) {
       val = props[key]
       name = camelize(key)
@@ -308,6 +312,7 @@ function normalizeProps (options: Object, vm: ?Component) {
 
 /**
  * Normalize all injections into Object-based format
+ * 格式化不同传参方式的 inject 为 { xxx: { from: xxx } }
  */
 function normalizeInject (options: Object, vm: ?Component) {
   const inject = options.inject
@@ -335,6 +340,7 @@ function normalizeInject (options: Object, vm: ?Component) {
 
 /**
  * Normalize raw function directives into object format.
+ * 格式化不同传参方式的 inject 为 { xxx: { bind: Function, update: Function } }
  */
 function normalizeDirectives (options: Object) {
   const dirs = options.directives
@@ -361,6 +367,7 @@ function assertObjectType (name: string, value: any, vm: ?Component) {
 /**
  * Merge two option objects into a new one.
  * Core utility used in both instantiation and inheritance.
+ * 合并两个 options
  */
 export function mergeOptions (
   parent: Object,
@@ -368,6 +375,7 @@ export function mergeOptions (
   vm?: Component
 ): Object {
   if (process.env.NODE_ENV !== 'production') {
+    // 非生产环境下，检查 component 的名称是否合法
     checkComponents(child)
   }
 
@@ -375,14 +383,19 @@ export function mergeOptions (
     child = child.options
   }
 
+  // 格式化 porps 的各种传入方式
   normalizeProps(child, vm)
+  // 格式化 inject 的各种传入方式
   normalizeInject(child, vm)
+  // 格式化 directive 的各种传入方式
   normalizeDirectives(child)
   const extendsFrom = child.extends
   if (extendsFrom) {
+    // 递归合并 extends 的变量
     parent = mergeOptions(parent, extendsFrom, vm)
   }
   if (child.mixins) {
+    // 递归合并 mixins 的变量(数组形式)
     for (let i = 0, l = child.mixins.length; i < l; i++) {
       parent = mergeOptions(parent, child.mixins[i], vm)
     }
@@ -390,15 +403,21 @@ export function mergeOptions (
   const options = {}
   let key
   for (key in parent) {
+    // 这个循环实际处理了“父集和子集都有对应的 key 的选项”和“父集自己独有的选项”的各自的合并，所以下一个循环只需要处理子集独有的选项的合并
+    // 例如父集有 a/b/c 三个选项，子集有 b/d 两个选项，这里处理的是父集和子集的 a/b/c 三个选项，下一个循环处理的是 d 这个选项
+    // 这里这样写就可以让每一个选项都只经过一次合并策略的处理，算是一种优化
     mergeField(key)
   }
   for (key in child) {
     if (!hasOwn(parent, key)) {
+      // 如果父集没有该 key 的定义，那么合并
       mergeField(key)
     }
   }
   function mergeField (key) {
+    // 受自定义合并策略 optionMergeStrategies 的设置影响
     const strat = strats[key] || defaultStrat
+    // 默认的合并策略优先使用子集的配置项，即 child[key]
     options[key] = strat(parent[key], child[key], vm, key)
   }
   return options

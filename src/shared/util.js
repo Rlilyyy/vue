@@ -205,6 +205,7 @@ export function toArray (list: any, start?: number): Array<any> {
 
 /**
  * Mix properties into target object.
+ * 简单的覆盖已有的属性
  */
 export function extend (to: Object, _from: ?Object): Object {
   for (const key in _from) {

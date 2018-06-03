@@ -1,0 +1,47 @@
+<html>
+
+<head>
+    <script src="./vue.js"></script>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script>
+        Vue.mixin({
+            created: function () {
+                console.log('global mixin');
+            }
+        })
+
+
+        a = new Vue({
+            template: '#app',
+            extends: {
+                created: function () { console.log('extends 123') },
+                methods: {
+                    test: function () { return ('methods 1') }
+                }
+            },
+            mixins: [
+                {
+                    created: function () { console.log('mixin1 123') },
+                    methods: {
+                        test: function () { return ('methods 2') }
+                    }
+                },
+                {
+                    created: function () { console.log('mixin2 123') }
+                }
+            ],
+            created: function () {
+                console.log(123)
+                console.log(this.test())
+            },
+            methods: {
+                // test: function () { return ('methods 3') }
+            }
+        })    
+    </script>
+</body>
+
+</html>
