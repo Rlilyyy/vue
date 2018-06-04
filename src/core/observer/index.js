@@ -31,6 +31,8 @@ export const observerState = {
  * object. Once attached, the observer converts target
  * object's property keys into getter/setters that
  * collect dependencies and dispatches updates.
+ * 数据 --被观察--> Observer --发布--> Dep --通知--> Watcher --订阅--> Observer
+ * Observer 是数据的观察者，每个观察者内有一个 Dep 实例，用来存储订阅者（Watcher）和发布消息给订阅者们
  */
 export class Observer {
   value: any;
@@ -39,6 +41,7 @@ export class Observer {
 
   constructor (value: any) {
     this.value = value
+    // Dep 存储 Watcher，并在适当的时机通知（notify）所有 Watcher
     this.dep = new Dep()
     this.vmCount = 0
     def(value, '__ob__', this)
@@ -192,16 +195,20 @@ export function defineReactive (
  */
 export function set (target: Array<any> | Object, key: any, val: any): any {
   if (Array.isArray(target) && isValidArrayIndex(key)) {
+    // 更新数组，这里用的是被修改过的 splice
     target.length = Math.max(target.length, key)
     target.splice(key, 1, val)
     return val
   }
   if (key in target && !(key in Object.prototype)) {
+    // 更新已存在的 key
     target[key] = val
     return val
   }
   const ob = (target: any).__ob__
   if (target._isVue || (ob && ob.vmCount)) {
+    // 不能是 Vue 实例或者已经被实例化过
+    // Vue 不允许在已经创建的实例上动态添加新的根级响应式属性(root-level reactive property)
     process.env.NODE_ENV !== 'production' && warn(
       'Avoid adding reactive properties to a Vue instance or its root $data ' +
       'at runtime - declare it upfront in the data option.'

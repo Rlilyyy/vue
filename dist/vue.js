@@ -1025,6 +1025,7 @@ function defineReactive (
 function set (target, key, val) {
   if (Array.isArray(target) && isValidArrayIndex(key)) {
     target.length = Math.max(target.length, key);
+    console.error(target.splice)
     target.splice(key, 1, val);
     return val
   }

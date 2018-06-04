@@ -16,6 +16,12 @@
 
         a = new Vue({
             template: '#app',
+            data() {
+                return {
+                    a: 100,
+                    b: []
+                }
+            },
             extends: {
                 created: function () { console.log('extends 123') },
                 methods: {
@@ -34,13 +40,20 @@
                 }
             ],
             created: function () {
+                this.$set(this.b, 0, 123)
                 console.log(123)
                 console.log(this.test())
+            },
+            computed: {
+                x: function() {
+                    return this.b;
+                }
             },
             methods: {
                 // test: function () { return ('methods 3') }
             }
-        })    
+        })
+        b = Vue.extend({})
     </script>
 </body>
 
