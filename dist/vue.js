@@ -664,6 +664,9 @@ var uid = 0;
  * A dep is an observable that can have multiple
  * directives subscribing to it.
  */
+setTimeout(function() {
+  console.log(Dep.target)
+},1000)
 var Dep = function Dep () {
   this.id = uid++;
   this.subs = [];
@@ -678,6 +681,7 @@ Dep.prototype.removeSub = function removeSub (sub) {
 };
 
 Dep.prototype.depend = function depend () {
+  console.warn(123)
   if (Dep.target) {
     Dep.target.addDep(this);
   }
@@ -893,7 +897,9 @@ var Observer = function Observer (value) {
  */
 Observer.prototype.walk = function walk (obj) {
   var keys = Object.keys(obj);
+  
   for (var i = 0; i < keys.length; i++) {
+    // Object key value
     defineReactive(obj, keys[i], obj[keys[i]]);
   }
 };
@@ -1025,7 +1031,6 @@ function defineReactive (
 function set (target, key, val) {
   if (Array.isArray(target) && isValidArrayIndex(key)) {
     target.length = Math.max(target.length, key);
-    console.error(target.splice)
     target.splice(key, 1, val);
     return val
   }
@@ -1045,6 +1050,7 @@ function set (target, key, val) {
     target[key] = val;
     return val
   }
+  console.error(ob.value === target)
   defineReactive(ob.value, key, val);
   ob.dep.notify();
   return val
@@ -1073,6 +1079,7 @@ function del (target, key) {
   if (!ob) {
     return
   }
+  console.error(target === ob.value)
   ob.dep.notify();
 }
 

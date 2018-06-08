@@ -45,6 +45,7 @@ if (typeof setImmediate !== 'undefined' && isNative(setImmediate)) {
 )) {
   const channel = new MessageChannel()
   const port = channel.port2
+  console.warn(port)
   channel.port1.onmessage = flushCallbacks
   macroTimerFunc = () => {
     port.postMessage(1)

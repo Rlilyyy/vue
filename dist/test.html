@@ -19,7 +19,12 @@
             data() {
                 return {
                     a: 100,
-                    b: []
+                    b: [5,5,6,6],
+                    c: {
+                        test: {
+                            xixi: 123
+                        }
+                    }
                 }
             },
             extends: {
@@ -40,9 +45,10 @@
                 }
             ],
             created: function () {
-                this.$set(this.b, 0, 123)
-                console.log(123)
-                console.log(this.test())
+                // this.$set(this.b, 0, 123)
+                console.warn(this)
+                Vue.set(this.c, 'd', 5)
+                Vue.delete(this.c, 'd')
             },
             computed: {
                 x: function() {
@@ -51,6 +57,9 @@
             },
             methods: {
                 // test: function () { return ('methods 3') }
+            },
+
+            mounted() {
             }
         })
         b = Vue.extend({})

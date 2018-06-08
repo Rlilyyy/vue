@@ -43,9 +43,12 @@ export class Observer {
     this.value = value
     // Dep 存储 Watcher，并在适当的时机通知（notify）所有 Watcher
     this.dep = new Dep()
+    // 实例化次数统计
     this.vmCount = 0
+    // 将 Observer 定义到数据的 __ob__
     def(value, '__ob__', this)
     if (Array.isArray(value)) {
+      // Array 类型的需要重写数组的几个操作方法，后面使用数组操作才会响应
       const augment = hasProto
         ? protoAugment
         : copyAugment
@@ -60,6 +63,7 @@ export class Observer {
    * Walk through each property and convert them into
    * getter/setters. This method should only be called when
    * value type is Object.
+   * 为每个变量都加入 getter 和 setter
    */
   walk (obj: Object) {
     const keys = Object.keys(obj)
@@ -106,6 +110,7 @@ function copyAugment (target: Object, src: Object, keys: Array<string>) {
  * Attempt to create an observer instance for a value,
  * returns the new observer if successfully observed,
  * or the existing observer if the value already has one.
+ * 为数组内的每个 value 都注册一个 Observer，基础类型不注册
  */
 export function observe (value: any, asRootData: ?boolean): Observer | void {
   if (!isObject(value) || value instanceof VNode) {
@@ -131,6 +136,7 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
 
 /**
  * Define a reactive property on an Object.
+ * 为每一个数据都添加 getter 和 setter
  */
 export function defineReactive (
   obj: Object,
@@ -143,19 +149,24 @@ export function defineReactive (
 
   const property = Object.getOwnPropertyDescriptor(obj, key)
   if (property && property.configurable === false) {
+    // 如果属性不可修改配置，那么跳过
     return
   }
 
   // cater for pre-defined getter/setters
+  // 此处保存数据已有的 getter 和 setter，后面会优先用到
   const getter = property && property.get
   const setter = property && property.set
 
+  // 如果数据是个对象，那么很明显需要递归去为里面的数据添加 Observer
   let childOb = !shallow && observe(val)
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
     get: function reactiveGetter () {
+      // 优先用已有的 getter
       const value = getter ? getter.call(obj) : val
+      // TODO
       if (Dep.target) {
         dep.depend()
         if (childOb) {
@@ -168,6 +179,7 @@ export function defineReactive (
       return value
     },
     set: function reactiveSetter (newVal) {
+      // 优先用已有的 getter
       const value = getter ? getter.call(obj) : val
       /* eslint-disable no-self-compare */
       if (newVal === value || (newVal !== newVal && value !== value)) {
@@ -178,10 +190,12 @@ export function defineReactive (
         customSetter()
       }
       if (setter) {
+        // 优先用已有的 setter
         setter.call(obj, newVal)
       } else {
         val = newVal
       }
+      // 新的值需要重新注册其内部属性 Observer，并更新 childOb
       childOb = !shallow && observe(newVal)
       dep.notify()
     }
@@ -192,6 +206,7 @@ export function defineReactive (
  * Set a property on an object. Adds the new property and
  * triggers change notification if the property doesn't
  * already exist.
+ * Vue.set、vm.$set
  */
 export function set (target: Array<any> | Object, key: any, val: any): any {
   if (Array.isArray(target) && isValidArrayIndex(key)) {
@@ -219,6 +234,7 @@ export function set (target: Array<any> | Object, key: any, val: any): any {
     target[key] = val
     return val
   }
+  // ob.value === target
   defineReactive(ob.value, key, val)
   ob.dep.notify()
   return val
@@ -226,6 +242,7 @@ export function set (target: Array<any> | Object, key: any, val: any): any {
 
 /**
  * Delete a property and trigger change if necessary.
+ * Vue.delete、vm.$delete
  */
 export function del (target: Array<any> | Object, key: any) {
   if (Array.isArray(target) && isValidArrayIndex(key)) {
@@ -247,6 +264,7 @@ export function del (target: Array<any> | Object, key: any) {
   if (!ob) {
     return
   }
+  
   ob.dep.notify()
 }
 
