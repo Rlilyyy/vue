@@ -68,6 +68,8 @@ if (typeof Promise !== 'undefined' && isNative(Promise)) {
     // microtask queue but the queue isn't being flushed, until the browser
     // needs to do some other work, e.g. handle a timer. Therefore we can
     // "force" the microtask queue to be flushed by adding an empty timer.
+    // 此处解决 UIWebViews 的 bug，当使用 promise 来实现 microTask 的时候，在 UIWebViews 中 microTask 并不会在正确的时候执行
+    // 除非浏览器需要去做另外的工作，例如定义定时器，所以这里强行定义一个定时器来清空 microTask
     if (isIOS) setTimeout(noop)
   }
 } else {
@@ -90,6 +92,7 @@ export function withMacroTask (fn: Function): Function {
 
 export function nextTick (cb?: Function, ctx?: Object) {
   let _resolve
+  // 将 cb 存储到数组里，后面会一次性清空
   callbacks.push(() => {
     if (cb) {
       try {
@@ -101,11 +104,16 @@ export function nextTick (cb?: Function, ctx?: Object) {
       _resolve(ctx)
     }
   })
+  // 如果是空闲状态，那么清空回调数组
+  // 默认都是使用 microTask，当将 pending 置为 true 后，后续的 nextTick 都会被直接添加到 callbacks 数组等待执行
+  // 等到 microTask 开始执行的时候，将 pending 置为 false 同时清空 callbacks 并执行，至此一个 microTask 执行完毕
   if (!pending) {
     pending = true
     if (useMacroTask) {
+      // 使用 macroTask 来执行清空操作
       macroTimerFunc()
     } else {
+      // 使用 microTask 来执行清空操作
       microTimerFunc()
     }
   }

@@ -1828,6 +1828,8 @@ function nextTick (cb, ctx) {
       _resolve(ctx);
     }
   });
+  console.error(`pending: ${pending}`)
+  console.error(`callback: ${callbacks.length}`)
   if (!pending) {
     pending = true;
     if (useMacroTask) {

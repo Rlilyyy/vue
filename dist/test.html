@@ -49,6 +49,22 @@
                 console.warn(this)
                 Vue.set(this.c, 'd', 5)
                 Vue.delete(this.c, 'd')
+
+                setTimeout(() => {
+                    console.log('settimeout')
+                })
+
+                this.$nextTick(() => {
+                    console.log('nexttick1')
+                })
+
+                this.$nextTick(() => {
+                    console.log('nexttick2')
+                })
+
+                this.$nextTick(() => {
+                    console.log('nexttick3')
+                })
             },
             computed: {
                 x: function() {
