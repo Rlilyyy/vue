@@ -664,9 +664,6 @@ var uid = 0;
  * A dep is an observable that can have multiple
  * directives subscribing to it.
  */
-setTimeout(function() {
-  console.log(Dep.target)
-},1000)
 var Dep = function Dep () {
   this.id = uid++;
   this.subs = [];
@@ -681,7 +678,6 @@ Dep.prototype.removeSub = function removeSub (sub) {
 };
 
 Dep.prototype.depend = function depend () {
-  console.warn(123)
   if (Dep.target) {
     Dep.target.addDep(this);
   }
@@ -1050,7 +1046,6 @@ function set (target, key, val) {
     target[key] = val;
     return val
   }
-  console.error(ob.value === target)
   defineReactive(ob.value, key, val);
   ob.dep.notify();
   return val
@@ -1079,7 +1074,6 @@ function del (target, key) {
   if (!ob) {
     return
   }
-  console.error(target === ob.value)
   ob.dep.notify();
 }
 
@@ -4708,6 +4702,7 @@ function initExtend (Vue) {
    * Class inheritance
    */
   Vue.extend = function (extendOptions) {
+    console.error(extendOptions)
     extendOptions = extendOptions || {};
     var Super = this;
     var SuperId = Super.cid;

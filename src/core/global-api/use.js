@@ -13,6 +13,7 @@ export function initUse (Vue: GlobalAPI) {
 
     // additional parameters
     // 将传进来的参数转化为数组，除了第一个（第一个一般是 plugin）
+    // 第一个参数是 vm
     const args = toArray(arguments, 1)
     args.unshift(this)
     if (typeof plugin.install === 'function') {
