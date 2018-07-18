@@ -100,8 +100,11 @@ export function resolveConstructorOptions (Ctor: Class<Component>) {
     if (superOptions !== cachedSuperOptions) {
       // super option changed,
       // need to resolve new options.
+      // 如果父类的 options 发生了变化，那么需要重新整理 options
+      // 此判断是递归的，所以会一直追溯到最祖先的类的 options 变化
       Ctor.superOptions = superOptions
       // check if there are any late-modified/attached options (#4976)
+      // 解决后期注入的 options 不同步的问题
       const modifiedOptions = resolveModifiedOptions(Ctor)
       // update base extend options
       if (modifiedOptions) {

@@ -1822,8 +1822,6 @@ function nextTick (cb, ctx) {
       _resolve(ctx);
     }
   });
-  console.error(`pending: ${pending}`)
-  console.error(`callback: ${callbacks.length}`)
   if (!pending) {
     pending = true;
     if (useMacroTask) {
@@ -3268,7 +3266,10 @@ var sharedPropertyDefinition = {
 };
 
 function proxy (target, sourceKey, key) {
+  console.error(target, sourceKey, key)
   sharedPropertyDefinition.get = function proxyGetter () {
+    console.warn(this)
+
     return this[sourceKey][key]
   };
   sharedPropertyDefinition.set = function proxySetter (val) {
@@ -4529,6 +4530,7 @@ function initMixin (Vue) {
       // internal component options needs special treatment.
       initInternalComponent(vm, options);
     } else {
+      console.error(vm.constructor === vm)
       vm.$options = mergeOptions(
         resolveConstructorOptions(vm.constructor),
         options || {},
@@ -4613,6 +4615,7 @@ function resolveModifiedOptions (Ctor) {
   var latest = Ctor.options;
   var extended = Ctor.extendOptions;
   var sealed = Ctor.sealedOptions;
+  debugger
   for (var key in latest) {
     if (latest[key] !== sealed[key]) {
       if (!modified) { modified = {}; }
@@ -4683,6 +4686,7 @@ function initUse (Vue) {
 function initMixin$1 (Vue) {
   Vue.mixin = function (mixin) {
     this.options = mergeOptions(this.options, mixin);
+    console.error(this.options)
     return this
   };
 }
@@ -4707,7 +4711,9 @@ function initExtend (Vue) {
     var Super = this;
     var SuperId = Super.cid;
     var cachedCtors = extendOptions._Ctor || (extendOptions._Ctor = {});
+    console.error(SuperId)
     if (cachedCtors[SuperId]) {
+      console.error(123)
       return cachedCtors[SuperId]
     }
 
@@ -4719,7 +4725,9 @@ function initExtend (Vue) {
     var Sub = function VueComponent (options) {
       this._init(options);
     };
+    console.log(Super.prototype)
     Sub.prototype = Object.create(Super.prototype);
+    console.log(Sub.prototype)
     Sub.prototype.constructor = Sub;
     Sub.cid = cid++;
     Sub.options = mergeOptions(
@@ -4762,6 +4770,7 @@ function initExtend (Vue) {
 
     // cache constructor
     cachedCtors[SuperId] = Sub;
+
     return Sub
   };
 }

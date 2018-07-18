@@ -6,102 +6,170 @@
 
 <body>
   <div id="app">
-    
+
   </div>
   <script>
-    Vue.mixin({
-      created: function () {
-        console.log('global mixin');
-      }
-    })
+    // Vue.mixin({
+    //   created: function () {
+    //     console.log('global mixin');
+    //   }
+    // })
 
-    Vue.component('button-counter', {
+    // Vue.component('button-counter', {
+    //   data: function () {
+    //     return {
+    //       count: 0
+    //     }
+    //   },
+    //   template: '<button v-on:click="count++">你点击了 {{ count }} 次。</button>'
+    // })
+
+    // p = Vue.extend({
+    //     template: '<div></div>'
+    // })
+
+
+
+    // a = new Vue({
+    //   template: '<button-counter></button-counter>',
+    //   data() {
+    //     return {
+    //       a: 100,
+    //       b: [5, 5, 6, 6],
+    //       c: {
+    //         test: {
+    //           xixi: 123
+    //         }
+    //       }
+    //     }
+    //   },
+    //   extends: {
+    //     created: function () {
+    //       console.log('extends 123')
+    //     },
+    //     methods: {
+    //       test: function () {
+    //         return ('methods 1')
+    //       }
+    //     }
+    //   },
+    //   mixins: [{
+    //       created: function () {
+    //         console.log('mixin1 123')
+    //       },
+    //       methods: {
+    //         test: function () {
+    //           return ('methods 2')
+    //         }
+    //       }
+    //     },
+    //     {
+    //       created: function () {
+    //         console.log('mixin2 123')
+    //       }
+    //     }
+    //   ],
+    //   created: function () {
+    //     // this.$set(this.b, 0, 123)
+    //     console.warn(this)
+    //     Vue.set(this.c, 'd', 5)
+    //     Vue.delete(this.c, 'd')
+
+    //     setTimeout(() => {
+    //       console.log('settimeout')
+    //     })
+
+    //     this.$nextTick(() => {
+    //       console.log('nexttick1')
+    //     })
+
+    //     this.$nextTick(() => {
+    //       console.log('nexttick2')
+    //     })
+
+    //     this.$nextTick(() => {
+    //       console.log('nexttick3')
+    //     })
+    //   },
+    //   computed: {
+    //     x: function () {
+    //       return this.b;
+    //     }
+    //   },
+    //   methods: {
+    //     // test: function () { return ('methods 3') }
+    //   },
+
+    //   mounted() {}
+    // }).$mount("#app")
+
+    // var a = {
+    //   created() {
+    //     console.error(123)
+    //   },
+    //   props: ['size', 'myMessage']
+    // }
+
+    // var b = Vue.extend(a);
+
+    // var c = Vue.extend(a)
+
+    // var d = new c
+
+    // console.log(d)
+    // var mixin = {
+    //   created: function () {
+    //     console.log('mixin 对象的钩子函数被调用')
+    //   }
+    // }
+
+    // Vue.mixin({
+    //   created: function () {
+    //     console.log('mixin vue')
+    //   }
+    // })
+
+    // var x = Vue.extend({
+    //   created: function() {
+    //     console.log('mixin extend')
+    //   }
+    // })
+
+    // var y = x.extend({
+    //   created: function() {
+    //     console.log('mixin extend2')
+    //   }
+    // })
+
+    // p =new y({
+    //   mixins: [mixin],
+    //   created: function () {
+    //     console.log('组件的钩子函数被调用')
+    //   }
+    // })
+    var a = {
+      template: '<p>{{firstName}} {{lastName}} aka {{alias}}</p>',
+      created: function() {
+        console.log(123)
+      }
+    }
+    var Profile = Vue.extend(a)
+    Vue.mixin({
+      created: function() {
+        console.error(321)
+      },
       data: function () {
         return {
-          count: 0
+          firstName: 'Walter',
+          lastName: 'White',
+          alias: 'Heisenberg'
         }
-      },
-      template: '<button v-on:click="count++">你点击了 {{ count }} 次。</button>'
+      }
     })
-
-    p = Vue.extend({
-        template: '<div></div>'
-    })
-
-
-
-    a = new Vue({
-      template: '<button-counter></button-counter>',
-      data() {
-        return {
-          a: 100,
-          b: [5, 5, 6, 6],
-          c: {
-            test: {
-              xixi: 123
-            }
-          }
-        }
-      },
-      extends: {
-        created: function () {
-          console.log('extends 123')
-        },
-        methods: {
-          test: function () {
-            return ('methods 1')
-          }
-        }
-      },
-      mixins: [{
-          created: function () {
-            console.log('mixin1 123')
-          },
-          methods: {
-            test: function () {
-              return ('methods 2')
-            }
-          }
-        },
-        {
-          created: function () {
-            console.log('mixin2 123')
-          }
-        }
-      ],
-      created: function () {
-        // this.$set(this.b, 0, 123)
-        console.warn(this)
-        Vue.set(this.c, 'd', 5)
-        Vue.delete(this.c, 'd')
-
-        setTimeout(() => {
-          console.log('settimeout')
-        })
-
-        this.$nextTick(() => {
-          console.log('nexttick1')
-        })
-
-        this.$nextTick(() => {
-          console.log('nexttick2')
-        })
-
-        this.$nextTick(() => {
-          console.log('nexttick3')
-        })
-      },
-      computed: {
-        x: function () {
-          return this.b;
-        }
-      },
-      methods: {
-        // test: function () { return ('methods 3') }
-      },
-
-      mounted() {}
-    }).$mount("#app")
+    a.mounted = function() {
+      console.log(111)
+    }
+    new Profile()
 
   </script>
 </body>
