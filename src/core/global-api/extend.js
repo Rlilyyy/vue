@@ -25,6 +25,8 @@ export function initExtend (Vue: GlobalAPI) {
     const SuperId = Super.cid
     const cachedCtors = extendOptions._Ctor || (extendOptions._Ctor = {})
     if (cachedCtors[SuperId]) {
+      // 如果一个 extendOptions 被使用多次，并且是继承同一个实例，则会使用上次已经缓存过的子类
+      // 同一个父类 && 同一个继承选项
       return cachedCtors[SuperId]
     }
 
@@ -73,8 +75,11 @@ export function initExtend (Vue: GlobalAPI) {
     // keep a reference to the super options at extension time.
     // later at instantiation we can check if Super's options have
     // been updated.
+    // 用于保存父类的 options
     Sub.superOptions = Super.options
+    // 用于保存继承的 options
     Sub.extendOptions = extendOptions
+    // 用于保存正常流程下的 options
     Sub.sealedOptions = extend({}, Sub.options)
 
     // cache constructor

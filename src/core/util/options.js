@@ -132,6 +132,7 @@ strats.data = function (
 /**
  * Hooks and props are merged as arrays.
  */
+// 对于生命周期函数，在合并 options 的时候，需要用数组存储，而不是简单的覆盖
 function mergeHook (
   parentVal: ?Array<Function>,
   childVal: ?Function | ?Array<Function>
