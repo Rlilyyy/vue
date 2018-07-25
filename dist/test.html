@@ -9,24 +9,24 @@
     
   </div>
   <script>
-    Vue.mixin({
-      created: function () {
-        console.log('global mixin');
-      }
-    })
+    // Vue.mixin({
+    //   created: function () {
+    //     console.log('global mixin');
+    //   }
+    // })
 
-    Vue.component('button-counter', {
-      data: function () {
-        return {
-          count: 0
-        }
-      },
-      template: '<button v-on:click="count++">你点击了 {{ count }} 次。</button>'
-    })
+    // Vue.component('button-counter', {
+    //   data: function () {
+    //     return {
+    //       count: 0
+    //     }
+    //   },
+    //   template: '<button v-on:click="count++">你点击了 {{ count }} 次。</button>'
+    // })
 
-    p = Vue.extend({
-        template: '<div></div>'
-    })
+    // p = Vue.extend({
+    //     template: '<div></div>'
+    // })
 
 
 
@@ -89,6 +89,10 @@
 
         this.$nextTick(() => {
           console.log('nexttick3')
+        })
+
+        setTimeout(() => {
+          console.warn(this.x)
         })
       },
       computed: {

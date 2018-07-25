@@ -3438,7 +3438,9 @@ function defineComputed (
   key,
   userDef
 ) {
+  console.error(!isServerRendering())
   var shouldCache = !isServerRendering();
+  console.error(key, userDef)
   if (typeof userDef === 'function') {
     sharedPropertyDefinition.get = shouldCache
       ? createComputedGetter(key)
@@ -3463,6 +3465,7 @@ function defineComputed (
       );
     };
   }
+  console.error(sharedPropertyDefinition)
   Object.defineProperty(target, key, sharedPropertyDefinition);
 }
 
