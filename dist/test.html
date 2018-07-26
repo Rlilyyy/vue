@@ -147,29 +147,33 @@
     //     console.log('组件的钩子函数被调用')
     //   }
     // })
-    var a = {
-      template: '<p>{{firstName}} {{lastName}} aka {{alias}}</p>',
-      created: function() {
-        console.log(123)
-      }
-    }
-    var Profile = Vue.extend(a)
-    Vue.mixin({
-      created: function() {
-        console.error(321)
-      },
-      data: function () {
-        return {
-          firstName: 'Walter',
-          lastName: 'White',
-          alias: 'Heisenberg'
-        }
-      }
-    })
-    a.mounted = function() {
-      console.log(111)
-    }
-    new Profile()
+    // var a = {
+    //   template: '<p>{{firstName}} {{lastName}} aka {{alias}}</p>',
+    //   created: function() {
+    //     console.log(123)
+    //   }
+    // }
+    // var Profile = Vue.extend(a)
+    // Vue.mixin({
+    //   created: function() {
+    //     console.error(321)
+    //   },
+    //   data: function () {
+    //     return {
+    //       firstName: 'Walter',
+    //       lastName: 'White',
+    //       alias: 'Heisenberg'
+    //     }
+    //   }
+    // })
+    // a.mounted = function() {
+    //   console.log(111)
+    // }
+    // new Profile()
+
+    var a = {};
+    var x = Vue.extend(a);
+    var y = Vue.extend(a);
 
   </script>
 </body>

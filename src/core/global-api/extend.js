@@ -83,6 +83,7 @@ export function initExtend (Vue: GlobalAPI) {
     Sub.sealedOptions = extend({}, Sub.options)
 
     // cache constructor
+    // 该继承对象下创建一个cache对象，用来缓存继承自同一个父类的子类
     cachedCtors[SuperId] = Sub
     return Sub
   }

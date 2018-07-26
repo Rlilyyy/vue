@@ -4716,6 +4716,7 @@ function initExtend (Vue) {
     var cachedCtors = extendOptions._Ctor || (extendOptions._Ctor = {});
     console.error(SuperId)
     if (cachedCtors[SuperId]) {
+      debugger
       console.error(123)
       return cachedCtors[SuperId]
     }
