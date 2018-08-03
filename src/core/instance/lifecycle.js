@@ -24,6 +24,7 @@ export function initLifecycle (vm: Component) {
   const options = vm.$options
 
   // locate first non-abstract parent
+  // 查找第一个非抽象的父实例，这里非抽象指的是那些实际上不进行渲染的组件，例如 keep-alive、transition 这些虚拟组件
   let parent = options.parent
   if (parent && !options.abstract) {
     while (parent.$options.abstract && parent.$parent) {

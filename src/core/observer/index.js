@@ -166,10 +166,11 @@ export function defineReactive (
     get: function reactiveGetter () {
       // 优先用已有的 getter
       const value = getter ? getter.call(obj) : val
-      // TODO
+      // 收集依赖
       if (Dep.target) {
         dep.depend()
         if (childOb) {
+          // 当 value 是对象或者数组时，如果这个对象/数组里面的子元素发生变化，也要通知观察者
           childOb.dep.depend()
           if (Array.isArray(value)) {
             dependArray(value)
@@ -197,6 +198,7 @@ export function defineReactive (
       }
       // 新的值需要重新注册其内部属性 Observer，并更新 childOb
       childOb = !shallow && observe(newVal)
+      // 通知所有观察该属性的 Watcher
       dep.notify()
     }
   })
