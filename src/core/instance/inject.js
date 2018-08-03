@@ -52,6 +52,7 @@ export function resolveInject (inject: any, vm: Component): ?Object {
       const provideKey = inject[key].from
       let source = vm
       while (source) {
+        // 从自身开始寻找 provider 里有没有对应 inject 的内容，没有的话，查询父实例有没有，直到根实例
         if (source._provided && provideKey in source._provided) {
           result[key] = source._provided[provideKey]
           break
@@ -59,6 +60,7 @@ export function resolveInject (inject: any, vm: Component): ?Object {
         source = source.$parent
       }
       if (!source) {
+        // 如果最终都没有找到对应的 provider 提供对应的内容，那么此时读取 default 设置的默认值进行 inject，如果没有设置默认值，那么警告
         if ('default' in inject[key]) {
           const provideDefault = inject[key].default
           result[key] = typeof provideDefault === 'function'
