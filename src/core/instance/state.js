@@ -84,6 +84,7 @@ function initProps (vm: Component, propsOptions: Object) {
         )
       }
       defineReactive(props, key, value, () => {
+        // props 不允许在 component 内被动态修改
         if (vm.$parent && !isUpdatingChildComponent) {
           warn(
             `Avoid mutating a prop directly since the value will be ` +
@@ -101,6 +102,7 @@ function initProps (vm: Component, propsOptions: Object) {
     // during Vue.extend(). We only need to proxy props defined at
     // instantiation here.
     if (!(key in vm)) {
+      // 此处是为了实现 vm.xxx 可以访问到 props
       proxy(vm, `_props`, key)
     }
   }
@@ -109,6 +111,7 @@ function initProps (vm: Component, propsOptions: Object) {
 
 function initData (vm: Component) {
   let data = vm.$options.data
+  // 如果传入的是 function，那么最后实现的 data 将是私有的，而不是一个共享的 data
   data = vm._data = typeof data === 'function'
     ? getData(data, vm)
     : data || {}
@@ -261,12 +264,14 @@ function initMethods (vm: Component, methods: Object) {
         )
       }
       if (props && hasOwn(props, key)) {
+        // 在 props 中有重复的键名
         warn(
           `Method "${key}" has already been defined as a prop.`,
           vm
         )
       }
       if ((key in vm) && isReserved(key)) {
+        // 在实例中有重复的键名，例如 data 中定义了相同的键名
         warn(
           `Method "${key}" conflicts with an existing Vue instance method. ` +
           `Avoid defining component methods that start with _ or $.`
