@@ -189,7 +189,7 @@ export default class Watcher {
         this.value = value
         if (this.user) {
           try {
-            this.cb.call(this.vm, value, oldValue)
+            this.cb.call(this.vm, value, oldValue) 
           } catch (e) {
             handleError(e, this.vm, `callback for watcher "${this.expression}"`)
           }

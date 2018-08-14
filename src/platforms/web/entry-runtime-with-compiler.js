@@ -36,6 +36,7 @@ Vue.prototype.$mount = function (
     if (template) {
       if (typeof template === 'string') {
         if (template.charAt(0) === '#') {
+          // 如果是 id，那么需要读取该 id 的内容
           template = idToTemplate(template)
           /* istanbul ignore if */
           if (process.env.NODE_ENV !== 'production' && !template) {
@@ -46,6 +47,7 @@ Vue.prototype.$mount = function (
           }
         }
       } else if (template.nodeType) {
+        // 如果是 DOM 对象，那么直接读取 DOM 的 innerHTML
         template = template.innerHTML
       } else {
         if (process.env.NODE_ENV !== 'production') {
@@ -54,9 +56,11 @@ Vue.prototype.$mount = function (
         return this
       }
     } else if (el) {
+      // 如果传入的是 el 参数，那么直接读取该 el 的 outerHTML
       template = getOuterHTML(el)
     }
     if (template) {
+      // 此时 template 已经是 HTML 字符串了
       /* istanbul ignore if */
       if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
         mark('compile')
@@ -68,6 +72,7 @@ Vue.prototype.$mount = function (
         delimiters: options.delimiters,
         comments: options.comments
       }, this)
+      // 获取 render 函数
       options.render = render
       options.staticRenderFns = staticRenderFns
 
@@ -78,6 +83,7 @@ Vue.prototype.$mount = function (
       }
     }
   }
+  // 执行最原始的 mount 函数
   return mount.call(this, el, hydrating)
 }
 

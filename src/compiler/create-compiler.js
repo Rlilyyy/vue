@@ -24,6 +24,7 @@ export function createCompilerCreator (baseCompile: Function): Function {
             (baseOptions.modules || []).concat(options.modules)
         }
         // merge custom directives
+        // 如果是指令，增量更新
         if (options.directives) {
           finalOptions.directives = extend(
             Object.create(baseOptions.directives || null),
@@ -31,6 +32,7 @@ export function createCompilerCreator (baseCompile: Function): Function {
           )
         }
         // copy other options
+        // 自定义选项覆盖
         for (const key in options) {
           if (key !== 'modules' && key !== 'directives') {
             finalOptions[key] = options[key]

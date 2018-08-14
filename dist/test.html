@@ -6,7 +6,7 @@
 
 <body>
   <div id="app">
-
+      {{p}}
   </div>
   <script>
     // Vue.mixin({
@@ -30,78 +30,93 @@
 
 
 
-    // a = new Vue({
-    //   template: '<button-counter></button-counter>',
-    //   data() {
-    //     return {
-    //       a: 100,
-    //       b: [5, 5, 6, 6],
-    //       c: {
-    //         test: {
-    //           xixi: 123
-    //         }
-    //       }
-    //     }
-    //   },
-    //   extends: {
-    //     created: function () {
-    //       console.log('extends 123')
-    //     },
-    //     methods: {
-    //       test: function () {
-    //         return ('methods 1')
-    //       }
-    //     }
-    //   },
-    //   mixins: [{
-    //       created: function () {
-    //         console.log('mixin1 123')
-    //       },
-    //       methods: {
-    //         test: function () {
-    //           return ('methods 2')
-    //         }
-    //       }
-    //     },
-    //     {
-    //       created: function () {
-    //         console.log('mixin2 123')
-    //       }
-    //     }
-    //   ],
-    //   created: function () {
-    //     // this.$set(this.b, 0, 123)
-    //     console.warn(this)
-    //     Vue.set(this.c, 'd', 5)
-    //     Vue.delete(this.c, 'd')
+    a = new Vue({
+      // template: '<button-counter></button-counter>',
+      data() {
+        return {
+          a: 100,
+          b: [5, 5, 6, 6],
+          c: {
+            test: {
+              xixi: 123
+            }
+          }
+        }
+      },
+      // extends: {
+      //   created: function () {
+      //     console.log('extends 123')
+      //   },
+      //   methods: {
+      //     test: function () {
+      //       return ('methods 1')
+      //     }
+      //   }
+      // },
+      // mixins: [{
+      //     created: function () {
+      //       console.log('mixin1 123')
+      //     },
+      //     methods: {
+      //       test: function () {
+      //         return ('methods 2')
+      //       }
+      //     }
+      //   },
+      //   {
+      //     created: function () {
+      //       console.log('mixin2 123')
+      //     }
+      //   }
+      // ],
+      // created: function () {
+      //   // this.$set(this.b, 0, 123)
+      //   console.warn(this)
+      //   Vue.set(this.c, 'd', 5)
+      //   Vue.delete(this.c, 'd')
 
-    //     setTimeout(() => {
-    //       console.log('settimeout')
-    //     })
+      //   setTimeout(() => {
+      //     console.log('settimeout')
+      //   })
 
-    //     this.$nextTick(() => {
-    //       console.log('nexttick1')
-    //     })
+      //   this.$nextTick(() => {
+      //     console.log('nexttick1')
+      //   })
 
-    //     this.$nextTick(() => {
-    //       console.log('nexttick2')
-    //     })
+      //   this.$nextTick(() => {
+      //     console.log('nexttick2')
+      //   })
 
-    //     this.$nextTick(() => {
-    //       console.log('nexttick3')
-    //     })
-    //   },
-    //   computed: {
-    //     x: function () {
-    //       return this.b;
-    //     }
-    //   },
-    //   methods: {
-    //     // test: function () { return ('methods 3') }
-    //   },
+      //   this.$nextTick(() => {
+      //     console.log('nexttick3')
+      //   })
+      // },
+      // computed: {
+      //   x: function () {
+      //     return this.b;
+      //   }
+      // },
+      // methods: {
+      //   // test: function () { return ('methods 3') }
+      // },
 
-    //   mounted() {}
-    // }).$mount("#app")
+      // mounted() {}
+      // watch: {
+      //   a(val, oldval) {
+      //     this.b = this.c;
+      //   }
+      // },
+      computed: {
+        p() {
+          debugger
+          return this.a;
+        }
+      },
+
+      mounted() {
+        this.a = 13;
+      }
+    }).$mount("#app")
 
     // var a = {
     //   created() {
@@ -171,9 +186,9 @@
     // }
     // new Profile()
 
-    var a = {};
-    var x = Vue.extend(a);
-    var y = Vue.extend(a);
+    // var a = {};
+    // var x = Vue.extend(a);
+    // var y = Vue.extend(a);
 
   </script>
 </body>
