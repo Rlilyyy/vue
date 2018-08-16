@@ -539,17 +539,23 @@ export function createPatchFunction (backend) {
       if (isDef(i = data.hook) && isDef(i = i.update)) i(oldVnode, vnode)
     }
     if (isUndef(vnode.text)) {
+      // 如果没有文本
       if (isDef(oldCh) && isDef(ch)) {
+        // 如果比较的两个虚拟节点都有对应的子节点，那么进入子节点的diff
         if (oldCh !== ch) updateChildren(elm, oldCh, ch, insertedVnodeQueue, removeOnly)
       } else if (isDef(ch)) {
+        // 如果只有新的虚拟节点有子节点，那么如果旧节点有文本，就先清空，然后将子节点添加到旧节点上
         if (isDef(oldVnode.text)) nodeOps.setTextContent(elm, '')
         addVnodes(elm, null, ch, 0, ch.length - 1, insertedVnodeQueue)
       } else if (isDef(oldCh)) {
+        // 如果只有旧的虚拟节点有子节点，那么就将旧节点的子节点都清除
         removeVnodes(elm, oldCh, 0, oldCh.length - 1)
       } else if (isDef(oldVnode.text)) {
+        // 如果只有旧的虚拟节点有文本，那么就将文本清空
         nodeOps.setTextContent(elm, '')
       }
     } else if (oldVnode.text !== vnode.text) {
+      // 如果新旧虚拟节点的文本不一致，那么更新文本
       nodeOps.setTextContent(elm, vnode.text)
     }
     if (isDef(data)) {
@@ -724,14 +730,17 @@ export function createPatchFunction (backend) {
           }
           // either not server-rendered, or hydration failed.
           // create an empty node and replace it
+          // 创建一个临时的、空的虚拟 DOM
           oldVnode = emptyNodeAt(oldVnode)
         }
 
         // replacing existing element
         const oldElm = oldVnode.elm
+        // 获取当前节点的真实父节点
         const parentElm = nodeOps.parentNode(oldElm)
 
         // create new node
+        // 创建一个新的真实 DOM
         createElm(
           vnode,
           insertedVnodeQueue,
@@ -773,6 +782,7 @@ export function createPatchFunction (backend) {
         }
 
         // destroy old node
+        // 移除旧的虚拟节点，同时会调用 remove 钩子函数和 destory 钩子函数
         if (isDef(parentElm)) {
           removeVnodes(parentElm, [oldVnode], 0, 0)
         } else if (isDef(oldVnode.tag)) {

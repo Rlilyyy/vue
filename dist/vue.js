@@ -2624,6 +2624,8 @@ function initLifecycle (vm) {
 function lifecycleMixin (Vue) {
   Vue.prototype._update = function (vnode, hydrating) {
     var vm = this;
+    console.log(vm._vnode, vnode);
+
     if (vm._isMounted) {
       callHook(vm, 'beforeUpdate');
     }
@@ -2632,6 +2634,7 @@ function lifecycleMixin (Vue) {
     var prevActiveInstance = activeInstance;
     activeInstance = vm;
     vm._vnode = vnode;
+    
     // Vue.prototype.__patch__ is injected in entry points
     // based on the rendering backend used.
     if (!prevVnode) {
@@ -5703,6 +5706,7 @@ function createPatchFunction (backend) {
   }
 
   function updateChildren (parentElm, oldCh, newCh, insertedVnodeQueue, removeOnly) {
+    debugger
     var oldStartIdx = 0;
     var newStartIdx = 0;
     var oldEndIdx = oldCh.length - 1;
@@ -5800,6 +5804,7 @@ function createPatchFunction (backend) {
   }
 
   function patchVnode (oldVnode, vnode, insertedVnodeQueue, removeOnly) {
+    debugger
     if (oldVnode === vnode) {
       return
     }
@@ -5840,8 +5845,11 @@ function createPatchFunction (backend) {
       for (i = 0; i < cbs.update.length; ++i) { cbs.update[i](oldVnode, vnode); }
       if (isDef(i = data.hook) && isDef(i = i.update)) { i(oldVnode, vnode); }
     }
+    debugger
     if (isUndef(vnode.text)) {
+      // 如果没有文本
       if (isDef(oldCh) && isDef(ch)) {
+        // 如果两个虚拟节点都有对应的子节点
         if (oldCh !== ch) { updateChildren(elm, oldCh, ch, insertedVnodeQueue, removeOnly); }
       } else if (isDef(ch)) {
         if (isDef(oldVnode.text)) { nodeOps.setTextContent(elm, ''); }

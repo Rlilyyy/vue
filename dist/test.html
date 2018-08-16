@@ -6,7 +6,7 @@
 
 <body>
   <div id="app">
-      {{p}}
+      <div v-for="a in list">{{a}}</div>
   </div>
   <script>
     // Vue.mixin({
@@ -34,7 +34,7 @@
       // template: '<button-counter></button-counter>',
       data() {
         return {
-          a: 100,
+          list: [1,2,3,4,5,6],
           b: [5, 5, 6, 6],
           c: {
             test: {
@@ -108,13 +108,14 @@
       // },
       computed: {
         p() {
-          debugger
           return this.a;
         }
       },
 
       mounted() {
-        this.a = 13;
+        setTimeout(() => {
+          this.list.push(100)
+        },3000);
       }
     }).$mount("#app")
 
