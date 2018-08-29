@@ -6,7 +6,7 @@
 
 <body>
   <div id="app">
-      <div v-for="a in list">{{a}}</div>
+      <div v-for="a in list" @click="print">{{a}}</div>
   </div>
   <script>
     // Vue.mixin({
@@ -109,6 +109,12 @@
       computed: {
         p() {
           return this.a;
+        }
+      },
+
+      methods: {
+        print() {
+          console.log(this.list)
         }
       },
 

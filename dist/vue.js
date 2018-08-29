@@ -1802,6 +1802,7 @@ if (typeof Promise !== 'undefined' && isNative(Promise)) {
  */
 function withMacroTask (fn) {
   return fn._withTask || (fn._withTask = function () {
+    debugger
     useMacroTask = true;
     var res = fn.apply(null, arguments);
     useMacroTask = false;
@@ -4621,7 +4622,6 @@ function resolveModifiedOptions (Ctor) {
   var latest = Ctor.options;
   var extended = Ctor.extendOptions;
   var sealed = Ctor.sealedOptions;
-  debugger
   for (var key in latest) {
     if (latest[key] !== sealed[key]) {
       if (!modified) { modified = {}; }
@@ -4719,7 +4719,6 @@ function initExtend (Vue) {
     var cachedCtors = extendOptions._Ctor || (extendOptions._Ctor = {});
     console.error(SuperId)
     if (cachedCtors[SuperId]) {
-      debugger
       console.error(123)
       return cachedCtors[SuperId]
     }
@@ -5706,7 +5705,6 @@ function createPatchFunction (backend) {
   }
 
   function updateChildren (parentElm, oldCh, newCh, insertedVnodeQueue, removeOnly) {
-    debugger
     var oldStartIdx = 0;
     var newStartIdx = 0;
     var oldEndIdx = oldCh.length - 1;
@@ -5804,7 +5802,6 @@ function createPatchFunction (backend) {
   }
 
   function patchVnode (oldVnode, vnode, insertedVnodeQueue, removeOnly) {
-    debugger
     if (oldVnode === vnode) {
       return
     }
@@ -5845,7 +5842,6 @@ function createPatchFunction (backend) {
       for (i = 0; i < cbs.update.length; ++i) { cbs.update[i](oldVnode, vnode); }
       if (isDef(i = data.hook) && isDef(i = i.update)) { i(oldVnode, vnode); }
     }
-    debugger
     if (isUndef(vnode.text)) {
       // 如果没有文本
       if (isDef(oldCh) && isDef(ch)) {
